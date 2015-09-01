@@ -10,13 +10,14 @@ namespace HW1_PegPuzzle
     {
         #region Private
 
-
-
         #endregion
 
         #region Public
 
+        public PegPuzzle()
+        {
 
+        }
 
         #endregion
     }
