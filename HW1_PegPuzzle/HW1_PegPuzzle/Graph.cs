@@ -29,7 +29,19 @@ namespace HW1_PegPuzzle
 
         public void AddUndirectedEdge(GraphNode<T> from, GraphNode<T> to)
         {
-            
+            from.Neighbors.Add(to);
+
+            to.Neighbors.Add(from);
         }
+
+        public bool Contains(T value)
+        {
+            return _nodeList.FindByValue(value) != null;
+        }
+
+        //public bool Remove(T value)
+        //{
+
+        //}
     }
 }
