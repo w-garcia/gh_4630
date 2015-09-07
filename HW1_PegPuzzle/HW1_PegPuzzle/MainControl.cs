@@ -47,7 +47,7 @@ namespace HW1_PegPuzzle
         private void OnClickSearch(object sender, EventArgs e)
         {
             SetPuzzleState(_pegPuzzle.Board);
-            DFS.Search(_pegPuzzle);
+            List<GraphNode<Dictionary<int, bool>>> solution = DFS.Search(_pegPuzzle);
         }
 
         private void DisplayPuzzle(PegPuzzle pegPuzzle)

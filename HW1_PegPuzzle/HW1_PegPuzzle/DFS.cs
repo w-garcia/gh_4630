@@ -8,9 +8,8 @@ namespace HW1_PegPuzzle
 {
     static class DFS
     {
-        private bool _foundSolution = false;
 
-        public void Search(PegPuzzle pegPuzzle)
+        static public List<GraphNode<Dictionary<int, bool>>> Search(PegPuzzle pegPuzzle)
         {
             Stack<GraphNode<Dictionary<int, bool>>> stack = new Stack<GraphNode<Dictionary<int, bool>>>(); //filo
 
@@ -24,6 +23,8 @@ namespace HW1_PegPuzzle
             {
                 GraphNode<Dictionary<int, bool>> currentNode = stack.Pop();
 
+                if (currentNode == null) return null;
+
                 for (int i = 0; i < currentNode.Neighbors.Count; i++)
                 {
                     stack.Push(currentNode.Neighbors.ElementAt(i));
@@ -33,10 +34,20 @@ namespace HW1_PegPuzzle
                 if (currentNode.Value == goalState)
                 {
                     stack.Clear();
-                    _foundSolution = true;
-                                        
+
+                    List<GraphNode<Dictionary<int, bool>>> solutionList = new List<GraphNode<Dictionary<int, bool>>>();
+
+                    while (currentNode.Parent != null)
+                    {
+                        solutionList.Add(currentNode);
+                        currentNode = currentNode.Parent;
+                    }
+
+                    return solutionList;
                 }
             }
+
+            return null;
 
 
         }
