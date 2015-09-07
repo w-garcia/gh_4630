@@ -63,6 +63,9 @@
     <Compile Include="PegPuzzle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoundButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="MainControl.resx">
       <DependentUpon>MainControl.cs</DependentUpon>
     </EmbeddedResource>

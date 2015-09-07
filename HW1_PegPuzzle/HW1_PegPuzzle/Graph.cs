@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HW1_PegPuzzle
 {
-    public class Graph<T> : IEnumerable<T>
+    public class Graph<T> 
     {
         private GraphNodeList<T> _nodeList;
 
@@ -27,6 +27,11 @@ namespace HW1_PegPuzzle
             _nodeList.Add(new GraphNode<T>(value));
         }
 
+        public void AddDirectedEdge(GraphNode<T> from, GraphNode<T> to)
+        {
+            from.Neighbors.Add(to);
+        }
+
         public void AddUndirectedEdge(GraphNode<T> from, GraphNode<T> to)
         {
             from.Neighbors.Add(to);
@@ -39,9 +44,35 @@ namespace HW1_PegPuzzle
             return _nodeList.FindByValue(value) != null;
         }
 
-        //public bool Remove(T value)
-        //{
+        public bool Remove(T value)
+        {
+            // first remove the node from the nodeset
+            GraphNode<T> nodeToRemove = (GraphNode<T>)_nodeList.FindByValue(value);
+            if (nodeToRemove == null)
+                return false;
 
-        //}
+            _nodeList.Remove(nodeToRemove);
+
+            foreach (GraphNode<T> node in _nodeList)
+            {
+                int index = node.Neighbors.IndexOf(nodeToRemove);
+                if (index != -1)
+                {
+                    node.Neighbors.RemoveAt(index);
+                }
+            }
+
+            return true;
+        }
+
+        public GraphNodeList<T> Nodes
+        {
+            get { return _nodeList; }
+        }
+
+        public int Count
+        {
+            get { return _nodeList.Count; }
+        }
     }
 }

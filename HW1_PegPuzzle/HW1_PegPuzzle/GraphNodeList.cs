@@ -34,5 +34,15 @@ namespace HW1_PegPuzzle
                 // if we reached here, we didn't find a matching node
                 return null;
             }
+
+            public int IndexOf(GraphNode<T> node)
+            {
+                return this.List.IndexOf(node);
+            }
+
+            public void Remove(GraphNode<T> node)
+            {
+                this.List.Remove(node);
+            }
     }
 }
