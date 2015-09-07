@@ -11,7 +11,7 @@ namespace HW1_PegPuzzle
     {
         #region Private
 
-        private Graph<int> _movesGraph;
+        private Graph<Dictionary<int, bool>> _movesGraph;
         private Dictionary<int, bool> _currentBoard = new Dictionary<int, bool>();
         private Dictionary<int, bool> _startState = new Dictionary<int, bool>();
         private Dictionary<int, bool> _goalState = new Dictionary<int, bool>();
@@ -47,7 +47,7 @@ namespace HW1_PegPuzzle
         public PegPuzzle(int n)
         {
             _nValue = n;
-            _movesGraph = new Graph<int>();
+            _movesGraph = new Graph<Dictionary<int, bool>>();
             int pegs = 1;
             for(int i = n; i > 0; i--)
             {

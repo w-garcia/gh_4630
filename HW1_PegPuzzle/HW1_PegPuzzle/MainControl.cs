@@ -46,6 +46,7 @@ namespace HW1_PegPuzzle
 
         private void OnClickSearch(object sender, EventArgs e)
         {
+            SetPuzzleState(_pegPuzzle.Board);
             DFS.Search(_pegPuzzle);
         }
 
@@ -167,7 +168,7 @@ namespace HW1_PegPuzzle
         {
             for (int i = 1; i <= _tblPegBoard.Controls.Count; i++)
             {
-                Control currentPeg = _tblPegBoard.Controls[i];
+                Control currentPeg = _tblPegBoard.Controls[i - 1];
                 currentPeg.Enabled = false;
 
                 if (state[i]) currentPeg.BackColor = Color.DarkRed;

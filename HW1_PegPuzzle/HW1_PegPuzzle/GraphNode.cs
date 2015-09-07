@@ -10,6 +10,7 @@ namespace HW1_PegPuzzle
     {
         private T _data;
         private GraphNodeList<T> _neighbors = null;
+        private GraphNode<T> _parent = null;
 
         public GraphNode() {}
         public GraphNode(T data) : this(data, null) {}
