@@ -28,6 +28,7 @@ namespace HW1_PegPuzzle
 
         private void OnClickChooseStart(object sender, EventArgs e)
         {
+
    
         }
 
@@ -44,14 +45,14 @@ namespace HW1_PegPuzzle
             _tblPegBoard.RowCount = (int)rows;
             _tblPegBoard.ColumnCount = (int)columns;
 
-            int centerColumn = Convert.ToInt32(Math.Ceiling(columns/2));
+            int centerColumn = Convert.ToInt32(Math.Ceiling(columns/2)) - 1;
 
-            for (int i = 1; i <= rows; i++)
+            for (int i = 0; i < rows; i++)
             {
                 // i will also denote how many pegs to place this level
-                int pegsToPlace = i;
+                int pegsToPlace = i + 1;
 
-                if (i % 2 != 0) // add center peg
+                if (i % 2 == 0) // add center peg
                 {
                     PlacePeg(centerColumn, i);
                     pegsToPlace--;
@@ -61,8 +62,9 @@ namespace HW1_PegPuzzle
                 int leftPegsToPlace = rightPegsToPlace;
 
                 // add pegs to right side every 2 columns
-                for (int j = centerColumn+1; j < columns; j+=2)
+                for (int j = centerColumn + 1; j < columns; j+=2)
                 {
+                    if (i % 2 == 0 && j == centerColumn + 1) j++; //shift over to the right since we added to center
                     if (rightPegsToPlace > 0)
                     {
                         PlacePeg(j, i);
@@ -71,8 +73,9 @@ namespace HW1_PegPuzzle
                 }
 
                 // add pegs to left side every 2 columns
-                for (int j = centerColumn-1; j > 0; j -= 2)
+                for (int j = centerColumn-1; j >= 0; j -= 2)
                 {
+                    if (i % 2 == 0 && j == centerColumn - 1) j--; //shift over to the left since we added to center
                     if (leftPegsToPlace > 0)
                     {
                         PlacePeg(j, i);
@@ -82,7 +85,18 @@ namespace HW1_PegPuzzle
                     
             }
 
+            AssignNamesToPegs(rows, columns);
+        }
 
+        private void AssignNamesToPegs(double rows, double columns)
+        {
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+
+                }
+            }
         }
 
         private void PlacePeg(int column, int row)
@@ -91,6 +105,7 @@ namespace HW1_PegPuzzle
             pegButton.Height = 30;
             pegButton.Width = 30;
             pegButton.Click += OnClickPeg;
+            pegButton.Enabled = false;
 
             pegButton.BackColor = Color.DarkRed;
 

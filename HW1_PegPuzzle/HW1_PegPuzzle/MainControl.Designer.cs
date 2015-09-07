@@ -167,15 +167,14 @@
             // _tblPegBoard
             // 
             this._tblPegBoard.ColumnCount = 1;
-            this._tblPegBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._tblPegBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this._tblPegBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this._tblPegBoard.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._tblPegBoard.Location = new System.Drawing.Point(3, 43);
+            this._tblPegBoard.Location = new System.Drawing.Point(9, 49);
+            this._tblPegBoard.Margin = new System.Windows.Forms.Padding(9);
             this._tblPegBoard.Name = "_tblPegBoard";
             this._tblPegBoard.RowCount = 1;
-            this._tblPegBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._tblPegBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this._tblPegBoard.Size = new System.Drawing.Size(887, 437);
+            this._tblPegBoard.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this._tblPegBoard.Size = new System.Drawing.Size(875, 425);
             this._tblPegBoard.TabIndex = 1;
             // 
             // MainControl
