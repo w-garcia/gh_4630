@@ -155,7 +155,8 @@ namespace HW1_PegPuzzle
 
         private void SetPuzzleState(Dictionary<int, bool> state)
         {
-            int orderKey = 0;
+            state.Clear();
+            int orderKey = 1;
             foreach (Control peg in _tblPegBoard.Controls)
             {
                 state.Add(orderKey++, Object.Equals(peg.BackColor, Color.DarkRed));
@@ -164,7 +165,7 @@ namespace HW1_PegPuzzle
 
         private void SetBoardToState(Dictionary<int, bool> state)
         {
-            for (int i = 0; i < _tblPegBoard.Controls.Count; i++)
+            for (int i = 1; i <= _tblPegBoard.Controls.Count; i++)
             {
                 Control currentPeg = _tblPegBoard.Controls[i];
                 currentPeg.Enabled = false;
