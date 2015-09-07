@@ -75,6 +75,7 @@
             this._btnGoalPoint.TabIndex = 5;
             this._btnGoalPoint.Text = "Choose Goal";
             this._btnGoalPoint.UseVisualStyleBackColor = true;
+            this._btnGoalPoint.Click += new System.EventHandler(this.OnClickChooseGoal);
             // 
             // _btnStartPoint
             // 

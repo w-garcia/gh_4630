@@ -12,7 +12,9 @@ namespace HW1_PegPuzzle
         #region Private
 
         private Graph<int> _movesGraph;
-        private Dictionary<int, bool> _board = new Dictionary<int, bool>();
+        private Dictionary<int, bool> _currentBoard = new Dictionary<int, bool>();
+        private Dictionary<int, bool> _startState = new Dictionary<int, bool>();
+        private Dictionary<int, bool> _goalState = new Dictionary<int, bool>();
         private int _nValue = 0;
 
         #endregion
@@ -26,9 +28,22 @@ namespace HW1_PegPuzzle
 
         public Dictionary<int, bool> Board
         {
-            get { return _board; }
+            get { return _currentBoard;  }
+            set { _currentBoard = value; }
         }
-        
+
+        public Dictionary<int, bool> Start
+        {
+            get { return _startState; }
+            set { _startState = value; }
+        }
+
+        public Dictionary<int, bool> Goal
+        {
+            get { return _goalState; }
+            set { _goalState = value; }
+        }
+
         public PegPuzzle(int n)
         {
             _nValue = n;
@@ -38,7 +53,7 @@ namespace HW1_PegPuzzle
             {
                 for (int j = 0; j < i; j++)
                 {
-                    _board.Add(pegs++, true);
+                    _currentBoard.Add(pegs++, true);
                 }
             }
 

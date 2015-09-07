@@ -28,8 +28,20 @@ namespace HW1_PegPuzzle
 
         private void OnClickChooseStart(object sender, EventArgs e)
         {
+            foreach (Control peg in _tblPegBoard.Controls)
+            {
+                peg.Enabled = true;
+            }
+        }
 
-   
+
+        private void OnClickChooseGoal(object sender, EventArgs e)
+        {
+            foreach (Control peg in _tblPegBoard.Controls)
+            {
+                peg.Enabled = true;
+                peg.BackColor = Color.White;
+            }
         }
 
         private void OnClickSearch(object sender, EventArgs e)
@@ -49,13 +61,17 @@ namespace HW1_PegPuzzle
 
             for (int i = 0; i < rows; i++)
             {
+                // keep track of what order pegs are placed in. 
+                Dictionary<int, KeyValuePair<int, int>> pegInsertionDictionary = new Dictionary<int, KeyValuePair<int, int>>();
+                int pegInsertionKey = 1;
+
                 // i will also denote how many pegs to place this level
                 int pegsToPlace = i + 1;
 
                 if (i % 2 == 0) // add center peg
                 {
-                    PlacePeg(centerColumn, i);
                     pegsToPlace--;
+                    pegInsertionDictionary.Add(pegInsertionKey++, new KeyValuePair<int,int>(i, centerColumn));
                 }
 
                 int rightPegsToPlace = pegsToPlace / 2;
@@ -67,8 +83,8 @@ namespace HW1_PegPuzzle
                     if (i % 2 == 0 && j == centerColumn + 1) j++; //shift over to the right since we added to center
                     if (rightPegsToPlace > 0)
                     {
-                        PlacePeg(j, i);
                         rightPegsToPlace--;
+                        pegInsertionDictionary.Add(pegInsertionKey++, new KeyValuePair<int, int>(i, j));
                     }
                 }
 
@@ -78,24 +94,30 @@ namespace HW1_PegPuzzle
                     if (i % 2 == 0 && j == centerColumn - 1) j--; //shift over to the left since we added to center
                     if (leftPegsToPlace > 0)
                     {
-                        PlacePeg(j, i);
                         leftPegsToPlace--;
+                        pegInsertionDictionary.Add(pegInsertionKey++, new KeyValuePair<int, int>(i, j));
                     }
                 }
-                    
+
+                // order will matter later when we assign names to the pegs, so order from lowest to highest column
+                IEnumerable<KeyValuePair<int, KeyValuePair<int, int>>> query = pegInsertionDictionary.OrderBy(kvp => kvp.Value.Value);
+
+                foreach (KeyValuePair<int, KeyValuePair<int, int>> kvp in query)
+                {
+                    PlacePeg(kvp.Value.Value, kvp.Value.Key);
+                }
             }
 
-            AssignNamesToPegs(rows, columns);
+            AssignNamesToPegs();
         }
 
-        private void AssignNamesToPegs(double rows, double columns)
+        private void AssignNamesToPegs()
         {
-            for (int i = 0; i < rows; i++)
+            int textVal = 1;
+            foreach (Control peg in _tblPegBoard.Controls)
             {
-                for (int j = 0; j < columns; j++)
-                {
-
-                }
+                peg.Enabled = true;
+                peg.Text = Convert.ToString(textVal++);
             }
         }
 
@@ -114,7 +136,43 @@ namespace HW1_PegPuzzle
 
         private void OnClickPeg(object sender, EventArgs e)
         {
+            RoundButton clickedPeg = (RoundButton)sender;
+            if (clickedPeg.BackColor == Color.DarkRed)
+            {
+                // we are setting initial state
+                clickedPeg.BackColor = Color.White;
+                SetPuzzleState(_pegPuzzle.Start);
+            }
+            else if (clickedPeg.BackColor == Color.White)
+            {
+                // we are setting goal state
+                clickedPeg.BackColor = Color.DarkRed;
+                SetPuzzleState(_pegPuzzle.Goal);
+            }
 
+            SetBoardToState(_pegPuzzle.Start);
+        }
+
+        private void SetPuzzleState(Dictionary<int, bool> state)
+        {
+            int orderKey = 0;
+            foreach (Control peg in _tblPegBoard.Controls)
+            {
+                state.Add(orderKey++, Object.Equals(peg.BackColor, Color.DarkRed));
+            }
+        }
+
+        private void SetBoardToState(Dictionary<int, bool> state)
+        {
+            for (int i = 0; i < _tblPegBoard.Controls.Count; i++)
+            {
+                Control currentPeg = _tblPegBoard.Controls[i];
+                currentPeg.Enabled = false;
+
+                if (state[i]) currentPeg.BackColor = Color.DarkRed;
+                else currentPeg.BackColor = Color.White;
+
+            }
         }
 
         #endregion 
@@ -136,7 +194,5 @@ namespace HW1_PegPuzzle
         }
 
         #endregion 
-
-
     }
 }
