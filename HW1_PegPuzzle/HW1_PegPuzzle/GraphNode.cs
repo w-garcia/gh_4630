@@ -31,5 +31,12 @@ namespace HW1_PegPuzzle
             get { return _neighbors; }
             set { _neighbors = value; }
         }
+
+        public GraphNode<T> Parent
+        {
+            get { return _parent; }
+            set { _parent = value; }
+        }
+
     }
 }

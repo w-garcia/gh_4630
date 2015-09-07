@@ -35,9 +35,21 @@ namespace HW1_PegPuzzle
                 return null;
             }
 
+            public GraphNode<T> Root()
+            {
+                if (this.List.Count > 0) return (GraphNode<T>)this.List[0];
+                else return null;
+            }
+
             public int IndexOf(GraphNode<T> node)
             {
                 return this.List.IndexOf(node);
+            }
+
+            public GraphNode<T> ElementAt(int i)
+            {
+                if (this.List.Count > i) return (GraphNode<T>)this.List[i];
+                else return null; 
             }
 
             public void Remove(GraphNode<T> node)

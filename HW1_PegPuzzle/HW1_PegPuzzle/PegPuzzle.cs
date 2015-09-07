@@ -44,6 +44,12 @@ namespace HW1_PegPuzzle
             set { _goalState = value; }
         }
 
+        public Graph<Dictionary<int, bool>> Moves
+        {
+            get { return _movesGraph; }
+            set { _movesGraph = value; }
+        }
+
         public PegPuzzle(int n)
         {
             _nValue = n;
