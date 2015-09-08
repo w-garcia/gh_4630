@@ -9,21 +9,21 @@ namespace HW1_PegPuzzle
     static class DFS
     {
 
-        static public List<GraphNode<Dictionary<int, bool>>> Search(PegPuzzle pegPuzzle)
+        static public List<GraphNode<Dictionary<KeyValuePair<int, int>, int>>> Search(PegPuzzle pegPuzzle)
         {
-            Stack<GraphNode<Dictionary<int, bool>>> stack = new Stack<GraphNode<Dictionary<int, bool>>>(); //filo
+            Stack<GraphNode<Dictionary<KeyValuePair<int, int>, int>>> stack = new Stack<GraphNode<Dictionary<KeyValuePair<int, int>, int>>>(); //filo
 
-            Dictionary<int, bool> currentState = pegPuzzle.Board;
-            Dictionary<int, bool> goalState = pegPuzzle.Goal;
+            Dictionary<KeyValuePair<int, int>, int> currentState = pegPuzzle.Board;
+            Dictionary<KeyValuePair<int, int>, int> goalState = pegPuzzle.Goal;
 
-            Graph<Dictionary<int, bool>> moves = pegPuzzle.Moves;
+            Graph<Dictionary<KeyValuePair<int, int>, int>> moves = pegPuzzle.Moves;
 
             stack.Push(moves.Nodes.Root());
             while (stack.Count != 0)
             {
-                GraphNode<Dictionary<int, bool>> currentNode = stack.Pop();
+                GraphNode<Dictionary<KeyValuePair<int, int>, int>> currentNode = stack.Pop();
 
-                if (currentNode == null) return null;
+                if (currentNode == null || currentNode.Neighbors == null) return null;
 
                 for (int i = 0; i < currentNode.Neighbors.Count; i++)
                 {
@@ -35,7 +35,7 @@ namespace HW1_PegPuzzle
                 {
                     stack.Clear();
 
-                    List<GraphNode<Dictionary<int, bool>>> solutionList = new List<GraphNode<Dictionary<int, bool>>>();
+                    List<GraphNode<Dictionary<KeyValuePair<int, int>, int>>> solutionList = new List<GraphNode<Dictionary<KeyValuePair<int, int>, int>>>();
 
                     while (currentNode.Parent != null)
                     {

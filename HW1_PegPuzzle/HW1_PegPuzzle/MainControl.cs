@@ -47,7 +47,9 @@ namespace HW1_PegPuzzle
         private void OnClickSearch(object sender, EventArgs e)
         {
             SetPuzzleState(_pegPuzzle.Board);
-            List<GraphNode<Dictionary<int, bool>>> solution = DFS.Search(_pegPuzzle);
+            _pegPuzzle.GenerateGraph();
+
+            List<GraphNode<Dictionary<KeyValuePair<int, int>, int>>> solution = DFS.Search(_pegPuzzle);
         }
 
         private void DisplayPuzzle(PegPuzzle pegPuzzle)
@@ -129,6 +131,7 @@ namespace HW1_PegPuzzle
             pegButton.Width = 30;
             pegButton.Click += OnClickPeg;
             pegButton.Enabled = false;
+            pegButton.Tag = new KeyValuePair<int, int>(column, row);
 
             pegButton.BackColor = Color.DarkRed;
 
@@ -154,26 +157,27 @@ namespace HW1_PegPuzzle
             SetBoardToState(_pegPuzzle.Start);
         }
 
-        private void SetPuzzleState(Dictionary<int, bool> state)
+        private void SetPuzzleState(Dictionary<KeyValuePair<int, int>, int> state)
         {
             state.Clear();
-            int orderKey = 1;
             foreach (Control peg in _tblPegBoard.Controls)
             {
-                state.Add(orderKey++, Object.Equals(peg.BackColor, Color.DarkRed));
+                int pegPlaced = Convert.ToInt16(Object.Equals(peg.BackColor, Color.DarkRed));
+
+                state.Add((KeyValuePair<int,int>)peg.Tag, pegPlaced);
             }
         }
 
-        private void SetBoardToState(Dictionary<int, bool> state)
+        private void SetBoardToState(Dictionary<KeyValuePair<int, int>, int> state)
         {
             for (int i = 1; i <= _tblPegBoard.Controls.Count; i++)
             {
                 Control currentPeg = _tblPegBoard.Controls[i - 1];
                 currentPeg.Enabled = false;
+                KeyValuePair<int, int> coordinates = (KeyValuePair<int, int>)currentPeg.Tag;
 
-                if (state[i]) currentPeg.BackColor = Color.DarkRed;
+                if (state[coordinates] > 0) currentPeg.BackColor = Color.DarkRed;
                 else currentPeg.BackColor = Color.White;
-
             }
         }
 

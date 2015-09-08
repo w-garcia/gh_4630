@@ -11,10 +11,10 @@ namespace HW1_PegPuzzle
     {
         #region Private
 
-        private Graph<Dictionary<int, bool>> _movesGraph;
-        private Dictionary<int, bool> _currentBoard = new Dictionary<int, bool>();
-        private Dictionary<int, bool> _startState = new Dictionary<int, bool>();
-        private Dictionary<int, bool> _goalState = new Dictionary<int, bool>();
+        private Graph<Dictionary<KeyValuePair<int, int>, int>> _movesGraph;
+        private Dictionary<KeyValuePair<int, int>, int> _currentBoard = new Dictionary<KeyValuePair<int, int>, int>();
+        private Dictionary<KeyValuePair<int, int>, int> _startState = new Dictionary<KeyValuePair<int, int>, int>();
+        private Dictionary<KeyValuePair<int, int>, int> _goalState = new Dictionary<KeyValuePair<int, int>, int>();
         private int _nValue = 0;
 
         #endregion
@@ -26,25 +26,25 @@ namespace HW1_PegPuzzle
             get { return _nValue; }
         }
 
-        public Dictionary<int, bool> Board
+        public Dictionary<KeyValuePair<int, int>, int> Board
         {
             get { return _currentBoard;  }
             set { _currentBoard = value; }
         }
 
-        public Dictionary<int, bool> Start
+        public Dictionary<KeyValuePair<int, int>, int> Start
         {
             get { return _startState; }
             set { _startState = value; }
         }
 
-        public Dictionary<int, bool> Goal
+        public Dictionary<KeyValuePair<int, int>, int> Goal
         {
             get { return _goalState; }
             set { _goalState = value; }
         }
 
-        public Graph<Dictionary<int, bool>> Moves
+        public Graph<Dictionary<KeyValuePair<int, int>, int>> Moves
         {
             get { return _movesGraph; }
             set { _movesGraph = value; }
@@ -53,14 +53,26 @@ namespace HW1_PegPuzzle
         public PegPuzzle(int n)
         {
             _nValue = n;
-            _movesGraph = new Graph<Dictionary<int, bool>>();
-            int pegs = 1;
-            for(int i = n; i > 0; i--)
+            _movesGraph = new Graph<Dictionary<KeyValuePair<int, int>, int>>();
+        }
+
+        public void GenerateGraph()
+        {
+            GraphNode<Dictionary<KeyValuePair<int, int>, int>> currentMove = new GraphNode<Dictionary<KeyValuePair<int, int>, int>>(_currentBoard);
+            _movesGraph.AddNode(currentMove);
+
+            bool foundSolution = false;
+
+            while (!foundSolution)
             {
-                for (int j = 0; j < i; j++)
+                
+
+                if (currentMove.Value != _goalState)
                 {
-                    _currentBoard.Add(pegs++, true);
+                    foundSolution = true;
+
                 }
+
             }
 
         }
