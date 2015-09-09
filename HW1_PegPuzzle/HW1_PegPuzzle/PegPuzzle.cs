@@ -56,44 +56,87 @@ namespace HW1_PegPuzzle
             _movesGraph = new Graph<Dictionary<KeyValuePair<int, int>, int>>();
         }
 
-        public void GenerateGraph()
+        public void GenerateGraph(GraphNode<Dictionary<KeyValuePair<int, int>, int>> currentMove)
         {
-            GraphNode<Dictionary<KeyValuePair<int, int>, int>> currentMove = new GraphNode<Dictionary<KeyValuePair<int, int>, int>>(_currentBoard);
-            _movesGraph.AddNode(currentMove);
+            var emptyPegsQuery =
+                from peg in currentMove.Value
+                where peg.Value == 0
+                select peg;
 
-            bool foundSolution = false;
-
-            while (!foundSolution)
+            foreach(var emptyPeg in emptyPegsQuery)
             {
-                if (currentMove.Value == _goalState)
+                var currentEmptyPeg = emptyPeg.Key;
+                // 6 possible moves, check each peg for no vacancy
+                var leftUpPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key - 2, emptyPeg.Key.Value - 2);
+                var leftDownPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key - 2, emptyPeg.Key.Value + 2);
+                var leftPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key - 4, emptyPeg.Key.Value);
+                var rightUpPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key + 2, emptyPeg.Key.Value - 2);
+                var rightDownPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key + 2, emptyPeg.Key.Value + 2);
+                var rightPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key + 4, emptyPeg.Key.Value);
+
+                int pegInPlace;
+                if (currentMove.Value.TryGetValue(leftUpPeg, out pegInPlace))
                 {
-
-                    foundSolution = true;
+                    var adjacentPegToReplace = new KeyValuePair<int, int>(emptyPeg.Key.Key - 1, emptyPeg.Key.Value - 1);
+                    if (currentMove.Value[adjacentPegToReplace] == 1 && pegInPlace == 1)
+                    {
+                        AddNextMove(currentMove, ref currentEmptyPeg, ref leftUpPeg, ref adjacentPegToReplace);
+                    }
                 }
-
-                var emptyPegsQuery =
-                    from peg in currentMove.Value
-                    where peg.Value == 0
-                    select peg;
-
-                foreach(var emptyPeg in emptyPegsQuery)
+                if (currentMove.Value.TryGetValue(leftDownPeg, out pegInPlace))
                 {
-                    // 6 possible moves, check each peg for no vacancy
-                    var leftUpPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key - 2, emptyPeg.Key.Value - 2);
-                    var leftDownPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key - 2, emptyPeg.Key.Value + 2);
-                    var leftPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key - 4, emptyPeg.Key.Value);
-                    var rightUpPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key + 2, emptyPeg.Key.Value - 2);
-                    var rightDownPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key + 2, emptyPeg.Key.Value + 2);
-                    var rightPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key + 4, emptyPeg.Key.Value);
-
-
-
+                    var adjacentPegToReplace = new KeyValuePair<int, int>(emptyPeg.Key.Key - 1, emptyPeg.Key.Value + 1);
+                    if (currentMove.Value[adjacentPegToReplace] == 1 && pegInPlace == 1)
+                    {
+                        AddNextMove(currentMove, ref currentEmptyPeg, ref leftUpPeg, ref adjacentPegToReplace);
+                    }
                 }
-
-                
-
+                if (currentMove.Value.TryGetValue(leftPeg, out pegInPlace))
+                {
+                    var adjacentPegToReplace = new KeyValuePair<int, int>(emptyPeg.Key.Key - 2, emptyPeg.Key.Value);
+                    if (currentMove.Value[adjacentPegToReplace] == 1 && pegInPlace == 1)
+                    {
+                        AddNextMove(currentMove, ref currentEmptyPeg, ref leftUpPeg, ref adjacentPegToReplace);
+                    }
+                }
+                if (currentMove.Value.TryGetValue(rightUpPeg, out pegInPlace))
+                {
+                    var adjacentPegToReplace = new KeyValuePair<int, int>(emptyPeg.Key.Key + 1, emptyPeg.Key.Value - 1);
+                    if (currentMove.Value[adjacentPegToReplace] == 1 && pegInPlace == 1)
+                    {
+                        AddNextMove(currentMove, ref currentEmptyPeg, ref leftUpPeg, ref adjacentPegToReplace);
+                    }
+                }
+                if (currentMove.Value.TryGetValue(rightDownPeg, out pegInPlace))
+                {
+                    var adjacentPegToReplace = new KeyValuePair<int, int>(emptyPeg.Key.Key + 1, emptyPeg.Key.Value + 1);
+                    if (currentMove.Value[adjacentPegToReplace] == 1 && pegInPlace == 1)
+                    {
+                        AddNextMove(currentMove, ref currentEmptyPeg, ref leftUpPeg, ref adjacentPegToReplace);
+                    }
+                }
+                if (currentMove.Value.TryGetValue(rightPeg, out pegInPlace))
+                {
+                    var adjacentPegToReplace = new KeyValuePair<int, int>(emptyPeg.Key.Key + 2, emptyPeg.Key.Value);
+                    if (currentMove.Value[adjacentPegToReplace] == 1 && pegInPlace == 1)
+                    {
+                        AddNextMove(currentMove, ref currentEmptyPeg, ref leftUpPeg, ref adjacentPegToReplace);
+                    }
+                }
             }
+        }
 
+        private void AddNextMove(GraphNode<Dictionary<KeyValuePair<int, int>, int>> currentMove, ref KeyValuePair<int, int> currentEmptyPeg, ref KeyValuePair<int, int> leftUpPeg, ref KeyValuePair<int, int> adjacentPegToReplace)
+        {
+            var newNextMove = new GraphNode<Dictionary<KeyValuePair<int, int>, int>>(currentMove.Value);
+            // move the peg to our empty slot
+            newNextMove.Value[adjacentPegToReplace] = 0;
+            newNextMove.Value[leftUpPeg] = 0;
+            newNextMove.Value[currentEmptyPeg] = 1;
+
+            newNextMove.Parent = currentMove;
+            _movesGraph.AddNode(newNextMove);
+            _movesGraph.AddDirectedEdge(currentMove, newNextMove);
         }
 
         #endregion

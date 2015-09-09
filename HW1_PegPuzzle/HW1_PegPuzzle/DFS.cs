@@ -13,15 +13,22 @@ namespace HW1_PegPuzzle
         {
             Stack<GraphNode<Dictionary<KeyValuePair<int, int>, int>>> stack = new Stack<GraphNode<Dictionary<KeyValuePair<int, int>, int>>>(); //filo
 
-            Dictionary<KeyValuePair<int, int>, int> currentState = pegPuzzle.Board;
+            Dictionary<KeyValuePair<int, int>, int> rootState = pegPuzzle.Board;
             Dictionary<KeyValuePair<int, int>, int> goalState = pegPuzzle.Goal;
 
             Graph<Dictionary<KeyValuePair<int, int>, int>> moves = pegPuzzle.Moves;
 
+            var rootNode = new GraphNode<Dictionary<KeyValuePair<int,int>, int>>(rootState);
+            rootNode.Neighbors = new GraphNodeList<Dictionary<KeyValuePair<int, int>, int>>();
+            moves.Nodes.Add(rootNode);
+
             stack.Push(moves.Nodes.Root());
+
             while (stack.Count != 0)
             {
                 GraphNode<Dictionary<KeyValuePair<int, int>, int>> currentNode = stack.Pop();
+
+                pegPuzzle.GenerateGraph(currentNode);
 
                 if (currentNode == null || currentNode.Neighbors == null) return null;
 

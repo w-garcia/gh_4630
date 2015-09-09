@@ -9,8 +9,8 @@ namespace HW1_PegPuzzle
     public class GraphNode<T>
     {
         private T _data;
-        private GraphNodeList<T> _neighbors = null;
-        private GraphNode<T> _parent = null;
+        private GraphNodeList<T> _neighbors;
+        private GraphNode<T> _parent;
 
         public GraphNode() {}
         public GraphNode(T data) : this(data, null) {}
