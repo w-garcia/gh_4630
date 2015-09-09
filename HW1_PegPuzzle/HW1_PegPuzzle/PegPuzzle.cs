@@ -65,13 +65,32 @@ namespace HW1_PegPuzzle
 
             while (!foundSolution)
             {
-                
-
-                if (currentMove.Value != _goalState)
+                if (currentMove.Value == _goalState)
                 {
+
                     foundSolution = true;
+                }
+
+                var emptyPegsQuery =
+                    from peg in currentMove.Value
+                    where peg.Value == 0
+                    select peg;
+
+                foreach(var emptyPeg in emptyPegsQuery)
+                {
+                    // 6 possible moves, check each peg for no vacancy
+                    var leftUpPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key - 2, emptyPeg.Key.Value - 2);
+                    var leftDownPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key - 2, emptyPeg.Key.Value + 2);
+                    var leftPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key - 4, emptyPeg.Key.Value);
+                    var rightUpPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key + 2, emptyPeg.Key.Value - 2);
+                    var rightDownPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key + 2, emptyPeg.Key.Value + 2);
+                    var rightPeg = new KeyValuePair<int, int>(emptyPeg.Key.Key + 4, emptyPeg.Key.Value);
+
+
 
                 }
+
+                
 
             }
 
