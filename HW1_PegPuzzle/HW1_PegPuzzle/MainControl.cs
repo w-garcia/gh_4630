@@ -23,6 +23,8 @@ namespace HW1_PegPuzzle
 
             _pegPuzzle = new PegPuzzle(n);
             DisplayPuzzle(_pegPuzzle);
+
+            _btnGenerate.Enabled = false;
             
         }
 
@@ -32,6 +34,8 @@ namespace HW1_PegPuzzle
             {
                 peg.Enabled = true;
             }
+
+            _btnStartPoint.Enabled = false;
         }
 
 
@@ -42,16 +46,68 @@ namespace HW1_PegPuzzle
                 peg.Enabled = true;
                 peg.BackColor = Color.White;
             }
+
+            _btnGoalPoint.Enabled = false;
         }
 
         private void OnClickSearch(object sender, EventArgs e)
         {
+            _btnSearch.Enabled = false;
+
             SetPuzzleState(_pegPuzzle.Board);
 
             List<GraphNode<Dictionary<KeyValuePair<int, int>, int>>> solution = DFS.Search(_pegPuzzle);
-
+            
             if (solution != null)
-                SetBoardToState(solution.ElementAt(solution.Count - 1).Value);
+            {
+                Label foundText = new Label();
+                foundText.Text = "Found Solution";
+                int columnCounter = 0;
+                _tblSolutionTable.Controls.Add(foundText, columnCounter++, 0);
+
+                foreach(var solutionBoard in solution)
+                {
+                    RoundButton pegButton = new RoundButton();
+                    pegButton.Height = 40;
+                    pegButton.Width = 40;
+                    pegButton.Click += OnClickSolution;
+                    pegButton.Enabled = true;
+
+                    pegButton.Tag = new Dictionary<KeyValuePair<int, int>, int>(solutionBoard.Value);
+
+                    pegButton.BackColor = Color.LightBlue;
+
+                    _tblSolutionTable.Controls.Add(pegButton, columnCounter++, 1);
+                }
+            }
+            else
+            {
+                _tblSolutionTable.Controls.Clear();
+                Label foundText = new Label();
+                foundText.Text = "No Solution Found";
+                _tblSolutionTable.Controls.Add(foundText, 0, 0);
+                
+            }
+
+        }
+
+        private void OnClickSolution(object sender, EventArgs e)
+        {
+            RoundButton pegButton = (RoundButton)sender;
+            var boardState = (Dictionary<KeyValuePair<int, int>, int>)pegButton.Tag;
+
+            SetBoardToState(boardState);
+        }
+
+        private void OnClickReset(object sender, EventArgs e)
+        {
+            _tblPegBoard.Controls.Clear();
+            _btnGenerate.Enabled = true;
+            _btnStartPoint.Enabled = true;
+            _btnGoalPoint.Enabled = true;
+            _btnSearch.Enabled = true;
+
+            _tblSolutionTable.Controls.Clear();
         }
 
         private void DisplayPuzzle(PegPuzzle pegPuzzle)
@@ -202,5 +258,7 @@ namespace HW1_PegPuzzle
         }
 
         #endregion 
+
+
     }
 }

@@ -13,7 +13,10 @@ namespace HW1_PegPuzzle
         private GraphNode<T> _parent;
 
         public GraphNode() {}
-        public GraphNode(T data) : this(data, null) {}
+        public GraphNode(T data) 
+        {
+            _data = data;
+        }
         public GraphNode(T data, GraphNodeList<T> neighbors)
         {
             _data = data;
