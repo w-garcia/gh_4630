@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace HW1_PegPuzzle
 {
@@ -14,6 +15,7 @@ namespace HW1_PegPuzzle
     {
 
         #region Private
+        private BackgroundWorker worker;
 
         PegPuzzle _pegPuzzle = null;
 
@@ -25,6 +27,8 @@ namespace HW1_PegPuzzle
             DisplayPuzzle(_pegPuzzle);
 
             _btnGenerate.Enabled = false;
+
+            _btnStartPoint.Enabled = true;
             
         }
 
@@ -54,41 +58,69 @@ namespace HW1_PegPuzzle
         {
             _btnSearch.Enabled = false;
 
+            worker = new BackgroundWorker();
+            worker.DoWork += DoWork;
+            worker.ProgressChanged += ProgressChanged;
+            worker.RunWorkerCompleted += OnWorkCompleted;
+            worker.WorkerReportsProgress = true;
+
+
             SetPuzzleState(_pegPuzzle.Board);
 
+            Label searchStart = new Label();
+            searchStart.Text = "Searching...";
+            _tblSolutionTable.Controls.Add(searchStart,0,0);
+            worker.RunWorkerAsync();
+        }
+
+        void ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+
+        }
+
+        void DoWork(object sender, DoWorkEventArgs e)
+        {
             List<GraphNode<Dictionary<KeyValuePair<int, int>, int>>> solution = DFS.Search(_pegPuzzle);
-            
+
+            e.Result = solution;
+        }
+
+        void OnWorkCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            var solution = (List<GraphNode<Dictionary<KeyValuePair<int, int>, int>>>)e.Result;
+
+            _tblSolutionTable.Controls.Clear();
+
             if (solution != null)
             {
                 Label foundText = new Label();
-                foundText.Text = "Found Solution";
+                foundText.Text = "Found solution:";
                 int columnCounter = 0;
                 _tblSolutionTable.Controls.Add(foundText, columnCounter++, 0);
 
-                foreach(var solutionBoard in solution)
+                int counter = 1;
+                foreach (var solutionBoard in solution.Reverse<GraphNode<Dictionary<KeyValuePair<int, int>, int>>>())
                 {
                     RoundButton pegButton = new RoundButton();
                     pegButton.Height = 40;
                     pegButton.Width = 40;
                     pegButton.Click += OnClickSolution;
-                    pegButton.Enabled = true;
-
                     pegButton.Tag = new Dictionary<KeyValuePair<int, int>, int>(solutionBoard.Value);
+                    //pegButton.BackColor = Color.LightBlue;
+                    pegButton.Enabled = true;
+                    pegButton.Text = Convert.ToString(counter++);
 
-                    pegButton.BackColor = Color.LightBlue;
-
-                    _tblSolutionTable.Controls.Add(pegButton, columnCounter++, 1);
+                    _tblSolutionTable.Controls.Add(pegButton, columnCounter++, 2);
                 }
             }
             else
             {
                 _tblSolutionTable.Controls.Clear();
                 Label foundText = new Label();
-                foundText.Text = "No Solution Found";
+                foundText.Text = "No solution found.";
                 _tblSolutionTable.Controls.Add(foundText, 0, 0);
-                
-            }
 
+            }
         }
 
         private void OnClickSolution(object sender, EventArgs e)
@@ -103,9 +135,9 @@ namespace HW1_PegPuzzle
         {
             _tblPegBoard.Controls.Clear();
             _btnGenerate.Enabled = true;
-            _btnStartPoint.Enabled = true;
-            _btnGoalPoint.Enabled = true;
-            _btnSearch.Enabled = true;
+            _btnStartPoint.Enabled = false;
+            _btnGoalPoint.Enabled = false;
+            _btnSearch.Enabled = false;
 
             _tblSolutionTable.Controls.Clear();
         }
@@ -204,12 +236,14 @@ namespace HW1_PegPuzzle
                 // we are setting initial state
                 clickedPeg.BackColor = Color.White;
                 SetPuzzleState(_pegPuzzle.Start);
+                _btnGoalPoint.Enabled = true;
             }
             else if (clickedPeg.BackColor == Color.White)
             {
                 // we are setting goal state
                 clickedPeg.BackColor = Color.DarkRed;
                 SetPuzzleState(_pegPuzzle.Goal);
+                _btnSearch.Enabled = true;
             }
 
             SetBoardToState(_pegPuzzle.Start);

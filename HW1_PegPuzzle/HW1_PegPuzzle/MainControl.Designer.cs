@@ -68,16 +68,17 @@
             this._tblInputs.Name = "_tblInputs";
             this._tblInputs.RowCount = 1;
             this._tblInputs.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._tblInputs.Size = new System.Drawing.Size(892, 33);
+            this._tblInputs.Size = new System.Drawing.Size(892, 32);
             this._tblInputs.TabIndex = 0;
             // 
             // _btnGoalPoint
             // 
             this._btnGoalPoint.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._btnGoalPoint.Enabled = false;
             this._btnGoalPoint.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._btnGoalPoint.Location = new System.Drawing.Point(595, 3);
             this._btnGoalPoint.Name = "_btnGoalPoint";
-            this._btnGoalPoint.Size = new System.Drawing.Size(142, 27);
+            this._btnGoalPoint.Size = new System.Drawing.Size(142, 26);
             this._btnGoalPoint.TabIndex = 5;
             this._btnGoalPoint.Text = "Choose Goal";
             this._btnGoalPoint.UseVisualStyleBackColor = true;
@@ -86,12 +87,13 @@
             // _btnStartPoint
             // 
             this._btnStartPoint.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._btnStartPoint.Enabled = false;
             this._btnStartPoint.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._btnStartPoint.Location = new System.Drawing.Point(447, 3);
             this._btnStartPoint.Name = "_btnStartPoint";
-            this._btnStartPoint.Size = new System.Drawing.Size(142, 27);
+            this._btnStartPoint.Size = new System.Drawing.Size(142, 26);
             this._btnStartPoint.TabIndex = 3;
-            this._btnStartPoint.Text = "Choose Start Point";
+            this._btnStartPoint.Text = "Choose Start";
             this._btnStartPoint.UseVisualStyleBackColor = true;
             this._btnStartPoint.Click += new System.EventHandler(this.OnClickChooseStart);
             // 
@@ -101,7 +103,7 @@
             this._lblNValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._lblNValue.Location = new System.Drawing.Point(3, 0);
             this._lblNValue.Name = "_lblNValue";
-            this._lblNValue.Size = new System.Drawing.Size(142, 33);
+            this._lblNValue.Size = new System.Drawing.Size(142, 32);
             this._lblNValue.TabIndex = 0;
             this._lblNValue.Text = "N-Value: ";
             this._lblNValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -113,12 +115,12 @@
             this._nudNValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._nudNValue.Location = new System.Drawing.Point(151, 3);
             this._nudNValue.Maximum = new decimal(new int[] {
-            1000000,
+            30,
             0,
             0,
             0});
             this._nudNValue.Minimum = new decimal(new int[] {
-            1,
+            4,
             0,
             0,
             0});
@@ -127,7 +129,7 @@
             this._nudNValue.TabIndex = 1;
             this._nudNValue.ThousandsSeparator = true;
             this._nudNValue.Value = new decimal(new int[] {
-            1,
+            4,
             0,
             0,
             0});
@@ -138,7 +140,7 @@
             this._btnGenerate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._btnGenerate.Location = new System.Drawing.Point(299, 3);
             this._btnGenerate.Name = "_btnGenerate";
-            this._btnGenerate.Size = new System.Drawing.Size(142, 27);
+            this._btnGenerate.Size = new System.Drawing.Size(142, 26);
             this._btnGenerate.TabIndex = 2;
             this._btnGenerate.Text = "Generate Puzzle";
             this._btnGenerate.UseVisualStyleBackColor = true;
@@ -147,10 +149,11 @@
             // _btnSearch
             // 
             this._btnSearch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._btnSearch.Enabled = false;
             this._btnSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._btnSearch.Location = new System.Drawing.Point(743, 3);
             this._btnSearch.Name = "_btnSearch";
-            this._btnSearch.Size = new System.Drawing.Size(146, 27);
+            this._btnSearch.Size = new System.Drawing.Size(146, 26);
             this._btnSearch.TabIndex = 4;
             this._btnSearch.Text = "Search";
             this._btnSearch.UseVisualStyleBackColor = true;
@@ -167,32 +170,33 @@
             this._tblMain.Location = new System.Drawing.Point(0, 0);
             this._tblMain.Name = "_tblMain";
             this._tblMain.RowCount = 3;
-            this._tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 39F));
-            this._tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this._tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 101F));
+            this._tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.368421F));
+            this._tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 66.31579F));
+            this._tblMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 26.31579F));
             this._tblMain.Size = new System.Drawing.Size(898, 529);
             this._tblMain.TabIndex = 1;
             // 
             // _tblPegBoard
             // 
+            this._tblPegBoard.AutoScroll = true;
             this._tblPegBoard.ColumnCount = 1;
             this._tblPegBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this._tblPegBoard.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._tblPegBoard.Location = new System.Drawing.Point(9, 48);
+            this._tblPegBoard.Location = new System.Drawing.Point(9, 47);
             this._tblPegBoard.Margin = new System.Windows.Forms.Padding(9);
             this._tblPegBoard.Name = "_tblPegBoard";
             this._tblPegBoard.RowCount = 1;
             this._tblPegBoard.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this._tblPegBoard.Size = new System.Drawing.Size(880, 316);
+            this._tblPegBoard.Size = new System.Drawing.Size(880, 332);
             this._tblPegBoard.TabIndex = 1;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this._tblOutput);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(3, 376);
+            this.groupBox1.Location = new System.Drawing.Point(3, 391);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(892, 150);
+            this.groupBox1.Size = new System.Drawing.Size(892, 135);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Output";
@@ -210,8 +214,8 @@
             this._tblOutput.Margin = new System.Windows.Forms.Padding(10);
             this._tblOutput.Name = "_tblOutput";
             this._tblOutput.RowCount = 1;
-            this._tblOutput.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this._tblOutput.Size = new System.Drawing.Size(886, 131);
+            this._tblOutput.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._tblOutput.Size = new System.Drawing.Size(886, 116);
             this._tblOutput.TabIndex = 0;
             // 
             // _btnReset
@@ -219,7 +223,7 @@
             this._btnReset.Dock = System.Windows.Forms.DockStyle.Fill;
             this._btnReset.Location = new System.Drawing.Point(800, 3);
             this._btnReset.Name = "_btnReset";
-            this._btnReset.Size = new System.Drawing.Size(83, 125);
+            this._btnReset.Size = new System.Drawing.Size(83, 110);
             this._btnReset.TabIndex = 0;
             this._btnReset.Text = "Reset";
             this._btnReset.UseVisualStyleBackColor = true;
@@ -227,17 +231,17 @@
             // 
             // _tblSolutionTable
             // 
+            this._tblSolutionTable.AutoScroll = true;
             this._tblSolutionTable.ColumnCount = 1;
             this._tblSolutionTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this._tblSolutionTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this._tblSolutionTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this._tblSolutionTable.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.AddColumns;
             this._tblSolutionTable.Location = new System.Drawing.Point(3, 3);
             this._tblSolutionTable.Name = "_tblSolutionTable";
-            this._tblSolutionTable.RowCount = 1;
+            this._tblSolutionTable.RowCount = 2;
             this._tblSolutionTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this._tblSolutionTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this._tblSolutionTable.Size = new System.Drawing.Size(791, 125);
+            this._tblSolutionTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this._tblSolutionTable.Size = new System.Drawing.Size(791, 110);
             this._tblSolutionTable.TabIndex = 1;
             // 
             // MainControl
