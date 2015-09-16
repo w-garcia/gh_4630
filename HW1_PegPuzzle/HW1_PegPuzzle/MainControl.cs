@@ -15,7 +15,8 @@ namespace HW1_PegPuzzle
     {
 
         #region Private
-        private BackgroundWorker worker;
+        private BackgroundWorker _worker;
+        private bool _isSettingStart = false;
 
         PegPuzzle _pegPuzzle = null;
 
@@ -34,47 +35,77 @@ namespace HW1_PegPuzzle
 
         private void OnClickChooseStart(object sender, EventArgs e)
         {
-            foreach (Control peg in _tblPegBoard.Controls)
+            foreach (RoundButton btn in _tblPegBoard.Controls)
             {
-                peg.Enabled = true;
+                btn.Enabled = true; 
             }
+
+            _isSettingStart = true;
 
             _tblSolutionTable.Controls.Clear();
 
             Label searchStart = new Label();
-            searchStart.Text = "Select a peg.";
-            _tblSolutionTable.Controls.Add(searchStart, 0, 0);
+            searchStart.AutoSize = true;
+            searchStart.Text = "Select pegs to activate/de-activate them. Click Done to set the start state.";
+            Button btnDone = new Button();
+            btnDone.Text = "Done";
+            btnDone.Click += OnClickDone;
 
+            _tblSolutionTable.Controls.Add(searchStart, 0, 0);
+            _tblSolutionTable.Controls.Add(btnDone, 0, 1);
             _btnStartPoint.Enabled = true;
+        }
+
+        void OnClickDone(object sender, EventArgs e)
+        {
+            if (_isSettingStart)
+            {
+                SetPuzzleState(_pegPuzzle.Start);
+                SetBoardToState(_pegPuzzle.Start);
+                _btnGoalPoint.Enabled = true;
+                _tblSolutionTable.Controls.Clear();
+            }
+            else
+            {
+                SetPuzzleState(_pegPuzzle.Goal);
+                SetBoardToState(_pegPuzzle.Start);
+                _tblSolutionTable.Controls.Clear();
+                _btnSearch.Enabled = true;
+            }
+
         }
 
 
         private void OnClickChooseGoal(object sender, EventArgs e)
         {
-            foreach (Control peg in _tblPegBoard.Controls)
-            {
-                peg.Enabled = true;
-                peg.BackColor = Color.White;
-            }
-
-            _btnGoalPoint.Enabled = false;
-
+            _isSettingStart = false;
             _tblSolutionTable.Controls.Clear();
 
             Label searchStart = new Label();
-            searchStart.Text = "Select a peg.";
+            searchStart.Text = "Select pegs to activate/de-activate them. Click Done to set the goal state.";
+            searchStart.AutoSize = true;
+            Button btnDone = new Button();
+            btnDone.Text = "Done";
+            btnDone.Click += OnClickDone;
+
             _tblSolutionTable.Controls.Add(searchStart, 0, 0);
+            _tblSolutionTable.Controls.Add(btnDone, 0, 1);
         }
 
         private void OnClickSearch(object sender, EventArgs e)
         {
             _btnSearch.Enabled = false;
 
-            worker = new BackgroundWorker();
-            worker.DoWork += DoWork;
-            worker.ProgressChanged += ProgressChanged;
-            worker.RunWorkerCompleted += OnWorkCompleted;
-            worker.WorkerReportsProgress = true;
+            foreach (Control btn in _tblPegBoard.Controls)
+            {
+                btn.Enabled = false;
+            }
+
+            _worker = new BackgroundWorker();
+            _worker.DoWork += DoWork;
+            _worker.ProgressChanged += ProgressChanged;
+            _worker.RunWorkerCompleted += OnWorkCompleted;
+            _worker.WorkerReportsProgress = true;
 
 
             SetPuzzleState(_pegPuzzle.Board);
@@ -82,7 +113,7 @@ namespace HW1_PegPuzzle
             Label searchStart = new Label();
             searchStart.Text = "Searching...";
             _tblSolutionTable.Controls.Add(searchStart,0,0);
-            worker.RunWorkerAsync();
+            _worker.RunWorkerAsync();
         }
 
         void ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -118,7 +149,6 @@ namespace HW1_PegPuzzle
                     pegButton.Width = 40;
                     pegButton.Click += OnClickSolution;
                     pegButton.Tag = new Dictionary<KeyValuePair<int, int>, int>(solutionBoard.Value);
-                    //pegButton.BackColor = Color.LightBlue;
                     pegButton.Enabled = true;
                     pegButton.Text = Convert.ToString(counter++);
 
@@ -221,7 +251,6 @@ namespace HW1_PegPuzzle
             int textVal = 1;
             foreach (Control peg in _tblPegBoard.Controls)
             {
-                peg.Enabled = true;
                 peg.Text = Convert.ToString(textVal++);
             }
         }
@@ -245,21 +274,14 @@ namespace HW1_PegPuzzle
             RoundButton clickedPeg = (RoundButton)sender;
             if (clickedPeg.BackColor == Color.DarkRed)
             {
-                // we are setting initial state
+                // setting start state
                 clickedPeg.BackColor = Color.White;
-                SetPuzzleState(_pegPuzzle.Start);
-                _btnGoalPoint.Enabled = true;
             }
             else if (clickedPeg.BackColor == Color.White)
             {
                 // we are setting goal state
                 clickedPeg.BackColor = Color.DarkRed;
-                SetPuzzleState(_pegPuzzle.Goal);
-                _btnSearch.Enabled = true;
             }
-
-            SetBoardToState(_pegPuzzle.Start);
-            _tblSolutionTable.Controls.Clear();
         }
 
         private void SetPuzzleState(Dictionary<KeyValuePair<int, int>, int> state)
@@ -278,7 +300,6 @@ namespace HW1_PegPuzzle
             for (int i = 1; i <= _tblPegBoard.Controls.Count; i++)
             {
                 Control currentPeg = _tblPegBoard.Controls[i - 1];
-                currentPeg.Enabled = false;
                 KeyValuePair<int, int> coordinates = (KeyValuePair<int, int>)currentPeg.Tag;
 
                 if (state[coordinates] > 0) currentPeg.BackColor = Color.DarkRed;
