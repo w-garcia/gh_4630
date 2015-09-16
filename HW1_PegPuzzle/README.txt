@@ -2,7 +2,7 @@ In order to use this program, first select a value for N from the numeric up dow
 
 Next click "Choose Start" and click on a peg to take it off the board. This can be repeated until the desired start state is acheived. 
 
-Click on "Choose Goal" to designate the peg that will be the goal state. This can only be performed once. 
+Click on "Choose Goal" to designate the peg that will be the goal state. This can be repeated until the desired goal state is acheived. 
 
 Click Search to commence the searching. 
 

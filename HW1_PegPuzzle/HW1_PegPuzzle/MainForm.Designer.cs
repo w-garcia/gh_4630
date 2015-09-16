@@ -48,7 +48,7 @@
             this.ClientSize = new System.Drawing.Size(910, 537);
             this.Controls.Add(this.mainControl1);
             this.Name = "MainForm";
-            this.Text = "HW1 PegPuzzle Garcia Washington";
+            this.Text = "CAP4630 Fall 2015 HW2 Garcia, Washington";
             this.ResumeLayout(false);
 
         }
