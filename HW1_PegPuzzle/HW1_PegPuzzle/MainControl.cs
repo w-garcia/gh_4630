@@ -39,7 +39,13 @@ namespace HW1_PegPuzzle
                 peg.Enabled = true;
             }
 
-            _btnStartPoint.Enabled = false;
+            _tblSolutionTable.Controls.Clear();
+
+            Label searchStart = new Label();
+            searchStart.Text = "Select a peg.";
+            _tblSolutionTable.Controls.Add(searchStart, 0, 0);
+
+            _btnStartPoint.Enabled = true;
         }
 
 
@@ -52,6 +58,12 @@ namespace HW1_PegPuzzle
             }
 
             _btnGoalPoint.Enabled = false;
+
+            _tblSolutionTable.Controls.Clear();
+
+            Label searchStart = new Label();
+            searchStart.Text = "Select a peg.";
+            _tblSolutionTable.Controls.Add(searchStart, 0, 0);
         }
 
         private void OnClickSearch(object sender, EventArgs e)
@@ -247,6 +259,7 @@ namespace HW1_PegPuzzle
             }
 
             SetBoardToState(_pegPuzzle.Start);
+            _tblSolutionTable.Controls.Clear();
         }
 
         private void SetPuzzleState(Dictionary<KeyValuePair<int, int>, int> state)
